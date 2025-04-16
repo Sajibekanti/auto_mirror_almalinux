@@ -28,8 +28,10 @@ update_mirror() {
     # Backup current repo files
     sudo cp -r /etc/yum.repos.d /etc/yum.repos.d.bak
 
-    # Update AlmaLinux repo configurations
-    sudo sed -i "s|^baseurl=.*|baseurl=$mirror_url|g" /etc/yum.repos.d/*.repo
+    # Inject the new baseurl directly into the repo configuration
+    sudo sed -i "s|mirrorlist=.*|baseurl=$mirror_url/BaseOS/\$basearch/os/|g" /etc/yum.repos.d/*.repo
+    sudo sed -i "s|mirrorlist=.*|baseurl=$mirror_url/AppStream/\$basearch/os/|g" /etc/yum.repos.d/*.repo
+    sudo sed -i "s|mirrorlist=.*|baseurl=$mirror_url/Extras/\$basearch/os/|g" /etc/yum.repos.d/*.repo
 
     # Clean and update metadata
     sudo dnf clean all
