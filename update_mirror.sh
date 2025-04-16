@@ -41,10 +41,17 @@ update_mirror() {
 # Main script execution
 almalinux_version=$(get_almalinux_version)
 
-# Remove quotes or extra spaces that might appear
+# Remove any quotes or extra spaces that might appear
 almalinux_version=$(echo "$almalinux_version" | xargs)
 
-echo "Detected AlmaLinux version: $almalinux_version"
+# Debugging: log the exact content of AlmaLinux version
+echo "Detected AlmaLinux version: $almalinux_version" >> /tmp/setup_mirror.log
 
-mirror_url=$(select_mirror_url "$almalinux_version")
-update_mirror "$mirror_url"
+# Ensure the version is correctly cleaned (no extra quotes or spaces)
+if [[ "$almalinux_version" == *"8"* || "$almalinux_version" == *"9"* ]]; then
+    mirror_url=$(select_mirror_url "$almalinux_version")
+    update_mirror "$mirror_url"
+else
+    echo "Unsupported AlmaLinux version: $almalinux_version" >> /tmp/setup_mirror.log
+    exit 1
+fi
