@@ -40,6 +40,10 @@ update_mirror() {
 
 # Main script execution
 almalinux_version=$(get_almalinux_version)
+
+# Remove quotes or extra spaces that might appear
+almalinux_version=$(echo "$almalinux_version" | xargs)
+
 echo "Detected AlmaLinux version: $almalinux_version"
 
 mirror_url=$(select_mirror_url "$almalinux_version")
