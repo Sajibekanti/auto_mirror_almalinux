@@ -41,8 +41,8 @@ update_mirror() {
 # Main script execution
 almalinux_version=$(get_almalinux_version)
 
-# Remove any quotes or extra spaces that might appear
-almalinux_version=$(echo "$almalinux_version" | xargs)
+# Clean up the version string: remove unwanted quotes and spaces
+almalinux_version=$(echo "$almalinux_version" | sed 's/"//g' | xargs)
 
 # Debugging: log the exact content of AlmaLinux version
 echo "Detected AlmaLinux version: $almalinux_version" >> /tmp/setup_mirror.log
