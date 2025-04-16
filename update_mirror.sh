@@ -2,7 +2,7 @@
 
 # Function to get the AlmaLinux version
 get_almalinux_version() {
-    cat /etc/os-release | grep -i "version" | awk -F= '{print $2}' | cut -d" " -f1
+    cat /etc/os-release | grep -i "version" | awk -F= '{print $2}' | cut -d" " -f1 | cut -d"." -f1-2
 }
 
 # Function to select mirror URL based on the version
@@ -11,10 +11,8 @@ select_mirror_url() {
     local mirror_base_url="https://mirror.limda.net/almalinux"
 
     if [[ "$version" == "8"* ]]; then
-        # Checking for AlmaLinux 8.x versions in the mirror folder
         echo "$mirror_base_url/8"
     elif [[ "$version" == "9"* ]]; then
-        # Checking for AlmaLinux 9.x versions in the mirror folder
         echo "$mirror_base_url/9"
     else
         echo "Unsupported AlmaLinux version"
